@@ -1,0 +1,27 @@
+{% extends "shop/base.html" %}
+{% load static %}
+
+{% block title %}
+    {% if category %}{{ category.title }}{% else %}Products{% endif %}
+{% endblock %}
+
+{% block content %}
+    <div class="product-detail">
+        {% if product.image %}{{ product.image.url }}{% else %}没有图片{% endif %}
+        <br>
+        <h1>{{ product.name }}</h1>
+        <br>
+        <h2><a href="{{ product.category.get_absolute_url }}">{{ product.category }}</a></h2>
+        <br>
+        <p class="price">${{ product.price }}</p>
+        <br>
+            {{ product.description|linebreaks }}
+        <br>
+        <form action="{% url "cart:cart_add" product.id %}" method="post">
+            {{ cart_product_form }}
+            {% csrf_token %}
+            <input type="submit" value="添加到购物车">
+        </form>
+        <br>
+    </div>
+{% endblock %}
